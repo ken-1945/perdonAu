@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Perdóname, mi amor</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff0f3;--ink:#5a1230;--rose:#e0245e;--rose-d:#b81a49;--card:#ffffff;--soft:#ffd6e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a0b18;--ink:#ffe3ea;--rose:#ff5c8a;--rose-d:#e0245e;--card:#3d1224;--soft:#5a1b35}}
+:root[data-theme="dark"]{--bg:#2a0b18;--ink:#ffe3ea;--rose:#ff5c8a;--rose-d:#e0245e;--card:#3d1224;--soft:#5a1b35}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.card{background:var(--card);border-radius:28px;padding:36px 28px;max-width:440px;width:calc(100% - 32px);text-align:center;box-shadow:0 12px 40px rgba(224,36,94,.18);position:relative;z-index:2}
+.heart{font-size:64px;line-height:1;animation:beat 1.2s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}20%{transform:scale(1.18)}40%{transform:scale(1)}}
+h1{font-family:'Caveat',cursive;font-size:44px;margin:12px 0 8px;line-height:1.05}
+p{font-size:18px;line-height:1.5;margin:0 0 24px}
+.btns{display:flex;gap:16px;justify-content:center;align-items:center;min-height:56px}
+button{font-family:inherit;font-weight:800;font-size:18px;border:0;border-radius:999px;padding:14px 34px;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#si{background:var(--rose);color:#fff;transition:transform .15s}
+#si:hover{transform:scale(1.08);background:var(--rose-d)}
+#no{background:var(--soft);color:var(--ink);transition:left .25s ease,top .25s ease}
+#final{display:none}
+#final h1{font-size:52px}
+.float{position:fixed;bottom:-40px;font-size:28px;animation:up 4s linear forwards;z-index:1;pointer-events:none}
+@keyframes up{to{transform:translateY(-115vh)}}
+@media (prefers-reduced-motion:reduce){.heart{animation:none}.float{display:none}}
+</style>
+</head>
+<body>
+<div class="card" id="pregunta">
+  <div class="heart">💔</div>
+  <h1>Perdóname, mi papita! </h1>
+  <p>Soy un tonto pero tonto por ti mi vida me lele mucho que me hables así o solo mandes like, se que es mi culpa lo entiendo pero igual mi bebé. ¿Me perdonas?</p>
+  <div class="btns">
+    <button id="si">Sí 💖</button>
+    <button id="no">No</button>
+  </div>
+</div>
+
+<div class="card" id="final">
+  <div class="heart">❤️</div>
+  <h1>Ya sabía, mi amor</h1>
+  <p style="font-size:22px;font-weight:800;margin:0">Te amo mucho ❤️❤️</p>
+</div>
+
+<script>
+const no = document.getElementById('no');
+const si = document.getElementById('si');
+let escapando = false;
+
+function huir(e){
+  if(e){ e.preventDefault(); }
+  if(!escapando){
+    escapando = true;
+    no.style.position = 'fixed';
+  }
+  const m = 12;
+  const maxX = window.innerWidth - no.offsetWidth - m;
+  const maxY = window.innerHeight - no.offsetHeight - m;
+  no.style.left = (m + Math.random() * Math.max(0, maxX - m)) + 'px';
+  no.style.top = (m + Math.random() * Math.max(0, maxY - m)) + 'px';
+}
+
+no.addEventListener('mouseenter', huir);
+no.addEventListener('mouseover', huir);
+no.addEventListener('pointerdown', huir);
+no.addEventListener('touchstart', huir, {passive:false});
+no.addEventListener('click', huir);
+no.addEventListener('focus', huir);
+
+si.addEventListener('click', () => {
+  document.getElementById('pregunta').style.display = 'none';
+  no.style.display = 'none';
+  document.getElementById('final').style.display = 'block';
+  const emojis = ['❤️','💖','💕','💗','😍','🌹'];
+  for(let i=0;i<40;i++){
+    setTimeout(()=>{
+      const s = document.createElement('span');
+      s.className = 'float';
+      s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.fontSize = (20 + Math.random()*28) + 'px';
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(), 4200);
+    }, i*120);
+  }
+});
+</script>
+</body>
+</html>
